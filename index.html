@@ -815,23 +815,28 @@
     if(roleEl) roleEl.textContent = roleText;
     revealCv();
   } else {
+    const STEP = 70;                                   // velocidad del nombre
+    const TOTAL = name.length * STEP;                  // duración total
+    const ROLE_STEP = TOTAL / roleText.length;         // el rol acaba a la vez
+
     let i = 0;
     (function type(){
       if(i <= name.length){
         typed.textContent = name.slice(0, i);
         i++;
-        setTimeout(type, 70);
+        setTimeout(type, STEP);
       } else {
-        revealCv();                       // el CV aparece al terminar el nombre
-        let j = 0;                        // y el rol se escribe igual que el nombre
-        (function typeRole(){
-          if(!roleEl) return;
-          if(j <= roleText.length){
-            roleEl.textContent = roleText.slice(0, j);
-            j++;
-            setTimeout(typeRole, 38);
-          }
-        })();
+        revealCv();                                    // el CV aparece al terminar
+      }
+    })();
+
+    let j = 0;                                         // se escribe en paralelo
+    (function typeRole(){
+      if(!roleEl) return;
+      if(j <= roleText.length){
+        roleEl.textContent = roleText.slice(0, j);
+        j++;
+        setTimeout(typeRole, ROLE_STEP);
       }
     })();
   }
