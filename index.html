@@ -308,14 +308,34 @@
   .tab:hover{opacity:.85;color:var(--text)}
   .tab:hover::after{transform:scaleX(1);opacity:.35}
 
-  /* Rebote sutil en la pestaña inactiva: indica que se puede pulsar */
-  .tab:not(.on){animation:tabNudge 2.8s ease-in-out infinite}
-  .tab:not(.on):hover{animation-play-state:paused}
+  /* Rebote continuo en la pestaña inactiva: indica que se puede pulsar */
+  /* Ola de color suave, de izquierda a derecha, en la pestaña inactiva */
+  .tab[data-panel="projects"]{--wave:var(--accent)}
+  .tab[data-panel="labs"]{--wave:var(--lab)}
+  .tab:not(.on){
+    animation:tabNudge 1.9s ease-in-out infinite, tabWave 3.2s ease-in-out infinite;
+    background-image:linear-gradient(90deg,
+      var(--muted) 0%, var(--muted) 26%,
+      var(--wave) 50%,
+      var(--muted) 74%, var(--muted) 100%);
+    background-size:300% 100%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    opacity:.75;
+  }
+  .tab:not(.on):hover{
+    background-image:none;-webkit-text-fill-color:var(--text);animation-play-state:paused;
+  }
+  @keyframes tabWave{
+    0%{background-position:100% 0}
+    100%{background-position:0% 0}
+  }
   @keyframes tabNudge{
-    0%,72%,100%{transform:translateY(0)}
-    80%{transform:translateY(-4px)}
-    88%{transform:translateY(-1px)}
-    94%{transform:translateY(0)}
+    0%{transform:translateY(0)}
+    16%{transform:translateY(-6px)}
+    31%{transform:translateY(0)}
+    39%{transform:translateY(-2px)}
+    47%,100%{transform:translateY(0)}
   }
   .tab.on{opacity:1}
   .tab.on::after{transform:scaleX(1);opacity:1}
