@@ -296,28 +296,34 @@
   .tl-card.open .more{grid-template-rows:1fr;opacity:1}
   .tl-card:focus-within .more{grid-template-rows:1fr;opacity:1}
 
-  /* Pestañas Proyectos / Laboratorio */
-  .tabs{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;padding-bottom:6px}
+  /* Pestañas Proyectos / Laboratorios (control segmentado) */
+  .tabs{
+    display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;
+    background:var(--panel);border:1px solid var(--border);
+    border-radius:16px;padding:6px;
+  }
+  .tab-sep{display:none}
   .tab{
     position:relative;
     font-family:var(--font-display);font-weight:600;
-    font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.01em;line-height:1.15;
-    background:none;border:none;padding:0 0 10px;cursor:pointer;
-    color:var(--muted);opacity:.5;transition:opacity .25s,color .25s;
+    font-size:clamp(1.15rem,3vw,1.6rem);letter-spacing:-.01em;line-height:1.15;
+    background:none;border:1px solid transparent;border-radius:11px;
+    padding:9px 20px;cursor:pointer;
+    color:var(--muted);transition:color .25s,background .25s,border-color .25s;
   }
-  .tab::after{
-    content:"";position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:3px;
-    background:currentColor;transform:scaleX(0);transform-origin:left center;
-    transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .25s;opacity:0;
-  }
-  .tab:hover{opacity:.85;color:var(--text)}
-  .tab:hover::after{transform:scaleX(1);opacity:.35}
-
-  /* Rebote continuo en la pestaña inactiva: indica que se puede pulsar */
-  /* Ola de color suave, de izquierda a derecha, en la pestaña inactiva */
   .tab[data-panel="projects"]{--wave:var(--accent)}
   .tab[data-panel="labs"]{--wave:var(--lab)}
+
+  /* Activa: rellena con su color */
+  .tab.on{
+    color:var(--wave);
+    background:color-mix(in srgb,var(--wave) 15%,transparent);
+    border-color:color-mix(in srgb,var(--wave) 40%,transparent);
+  }
+
+  /* Inactiva: borde discontinuo, ola de color y rebote */
   .tab:not(.on){
+    border:1px dashed color-mix(in srgb,var(--wave) 50%,transparent);
     animation:tabNudge 1.9s ease-in-out infinite, tabWave 3.2s ease-in-out infinite;
     background-image:linear-gradient(90deg,
       var(--muted) 0%, var(--muted) 26%,
@@ -326,10 +332,11 @@
     background-size:300% 100%;
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;
-    opacity:.75;
   }
   .tab:not(.on):hover{
-    background-image:none;-webkit-text-fill-color:var(--text);animation-play-state:paused;
+    background-image:none;-webkit-text-fill-color:var(--wave);
+    border-style:solid;border-color:var(--wave);
+    animation-play-state:paused;
   }
   @keyframes tabWave{
     0%{background-position:100% 0}
@@ -337,16 +344,12 @@
   }
   @keyframes tabNudge{
     0%{transform:translateY(0)}
-    16%{transform:translateY(-6px)}
+    16%{transform:translateY(-5px)}
     31%{transform:translateY(0)}
     39%{transform:translateY(-2px)}
     47%,100%{transform:translateY(0)}
   }
-  .tab.on{opacity:1}
-  .tab.on::after{transform:scaleX(1);opacity:1}
-  .tab[data-panel="projects"].on{color:var(--accent)}
-  .tab[data-panel="labs"].on{color:var(--lab)}
-  .tab-sep{font-family:var(--font-display);font-size:clamp(1.3rem,3.4vw,1.8rem);color:var(--muted);opacity:.3}
+
 
   /* Escenario 3D: giro tipo lata */
   .stage{perspective:1400px}
@@ -517,9 +520,8 @@
     .hero h1{font-size:clamp(2rem,10vw,3rem);word-break:break-word}
     .role{font-size:1.02rem;min-height:0;margin-bottom:4px}
     .cv-btn{font-size:14px;margin-top:18px}
-    .tabs{gap:10px}
-    .tab{font-size:1.5rem}
-    .tab-sep{font-size:1.2rem}
+    .tabs{gap:5px;padding:5px}
+    .tab{font-size:1.12rem;padding:8px 14px}
     .tl-title{font-size:1rem}
     .tl-desc,.tl-list li{font-size:.88rem}
     .contact-info{font-size:14px}
@@ -540,7 +542,7 @@
     .burger{right:14px}
     .lang{right:60px}
     .role{font-size:.92rem}
-    .tab{font-size:1.3rem}
+    .tab{font-size:1rem;padding:7px 11px}
     .tl-item{padding-left:40px}
     .contact-info{font-size:13px}
     .tl-title{font-size:.95rem}
